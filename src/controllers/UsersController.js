@@ -23,6 +23,15 @@ class UserController {
     }
     const user = await User.create();
   }
+  async read(req, res) {
+    try {
+      const users = await User.find();
+      res.json(users);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send('Server Error');
+    }
+  }
 }
 
 module.exports = new UserController();
