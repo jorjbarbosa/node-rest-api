@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
-    await mongoose.connect('mongodb://localhost/rest-api', {
+    await mongoose.connect('mongodb://localhost:27017/rest-api', {
       useNewUrlParser: true,
       useFindAndModify: false
     });
