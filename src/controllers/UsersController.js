@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 class UserController {
+  //Create a user
   async create(req, res) {
     const { name, email, password } = req.body;
     try {
@@ -24,6 +25,7 @@ class UserController {
     const user = await User.create();
   }
 
+  // Show all users
   async read(req, res) {
     try {
       const users = await User.find();
@@ -33,6 +35,8 @@ class UserController {
       res.status(500).send('Server Error');
     }
   }
+
+  // Read Single User
   async readSingle(req, res) {
     const id = req.params.id;
 
@@ -52,11 +56,30 @@ class UserController {
       res.status(500).send('Server Error');
     }
   }
+
+  // Update User
   async update(req, res) {
     const id = req.params.id;
     try {
       const user = await User.findOneAndUpdate({ _id: id }, req.body);
-      res.json(user);
+      res.json({ msg: 'user updated' });
+    } catch (error) {
+      console.error(error.message);
+      if (error.kind == 'ObjectId') {
+        return res.status(400).json({
+          msg: 'Profile not Found'
+        });
+      }
+      res.status(500).send('Server Error');
+    }
+  }
+
+  //Delete User
+  async delete(req, res) {
+    const id = req.params.id;
+    try {
+      const user = await User.findOneAndRemove({ _id: id });
+      res.json({ msg: 'User Removed' });
     } catch (error) {
       console.error(error.message);
       if (error.kind == 'ObjectId') {
