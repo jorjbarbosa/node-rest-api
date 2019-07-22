@@ -32,6 +32,25 @@ class UserController {
       res.status(500).send('Server Error');
     }
   }
+  async readSingle(req, res) {
+    const id = req.params.id;
+    const user = await User.findById(id);
+
+    try {
+      if (!user) {
+        res.status(400).json({ msg: 'User not found' });
+      }
+      res.json(user);
+    } catch (error) {
+      console.error(error.message);
+      if (error.kind == 'ObjectId') {
+        return res.status(400).json({
+          msg: 'Profile not Found'
+        });
+      }
+      res.status(500).send('Server Error');
+    }
+  }
 }
 
 module.exports = new UserController();
